@@ -34,8 +34,12 @@ export default function LocationForecast(props: any) {
 
     function handleChangeQuery(e: any) {
         setLocationQuery(e.target.value);
-        debouncedGetLocation(e.target.value);
     }
+
+    useEffect(() => {
+        if (locationQuery !== '')
+            debouncedGetLocation(locationQuery);
+    }, [locationQuery]);
 
     return (
         <div>
