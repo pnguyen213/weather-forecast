@@ -13,6 +13,11 @@ function uiReducer(state: UIState = defaultUIState, action: any) {
                 recentForecasts: action.payload
             };
         }
+        case ACTION_TYPES.SHOW_API_ERROR: {
+            return { ...state,
+                recentForecasts: null
+            };
+        }
         default:
             return state;
     }
