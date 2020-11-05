@@ -1,6 +1,9 @@
 import axios, { AxiosPromise, AxiosRequestConfig } from "axios";
-import { LocationData, RequestGetAPI } from './types';
+import { Dispatch } from "redux";
+import { RequestGetAPI } from "../models/apiModel";
+import { showError } from "./action";
 import { URL, WEATHER_SERVER_URL } from './constants';
+import { Error } from "./types";
 
 export function get<T>(request: RequestGetAPI): AxiosPromise<T> {
     const req: AxiosRequestConfig = {
@@ -15,9 +18,19 @@ export function get<T>(request: RequestGetAPI): AxiosPromise<T> {
     return axios(req);
 }
 
-export function getWoeid(query: string) {
-    const requestAPI: RequestGetAPI = {
-        url: `${URL.Location_Search_URL}?key=46c0b24f2a1c4ce196a43103202910&days=5&q=${query}`
-    }
-    return get<LocationData>(requestAPI);
+export function apiInterceptors(dispatch: Dispatch): void {
+    axios.interceptors.response.use(
+        (next) => {
+            return Promise.resolve(next);
+        },
+        (error) => {
+            const axiosError = error.response.data.error;
+            const apiError: Error = {
+                errorCode: axiosError.code,
+                errorMessage: axiosError.message
+            }
+            dispatch(showError(apiError));
+            return Promise.reject(error);
+        }
+    );
 }

@@ -3,6 +3,8 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles, Paper, Theme } from '@material-ui/core';
 import { debounce } from 'lodash';
+import { Forecast } from '../../models/dataModel';
+import { Dispatch } from 'redux';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -23,12 +25,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
 }));
 
-export default function LocationForecast(props: any) {
+interface LocationForecastProps {
+    recentForecasts: Forecast | null;
+    getLocationForecastAction: (query: string) => (dispatch: Dispatch) => Promise<void>;
+}
+
+export default function LocationForecast(props: LocationForecastProps) {
     const [locationQuery, setLocationQuery] = useState('');
     const classes = useStyles();
 
     const debouncedGetLocation = useCallback(
-        debounce(locationQuery => props.getLocationWoeid(locationQuery), 1000),
+        debounce(locationQuery => props.getLocationForecastAction(locationQuery), 1000),
         []
     );
 

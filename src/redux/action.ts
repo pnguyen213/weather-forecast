@@ -1,13 +1,23 @@
 import { Dispatch } from "redux"
-import { getWoeid } from "./helpers"
-import { StoreState, ACTION_TYPES } from "./types"
+import ForecastService from "../services/ForecastService";
+import { ACTION_TYPES, Error } from "./types"
 
+const forecastService = new ForecastService();
 
-export const getLocationWoeid = (query: string) => (dispatch: Dispatch) => getWoeid(query)
-    .then(response => {
-        const woeid = response.data.woeid || '';
-        dispatch({
-            type: ACTION_TYPES.SET_WOEID,
-            payload: woeid
-        })
-    });
+export const getLocationForecastAction = (query: string) => (dispatch: Dispatch) =>
+    forecastService.getLocationForecast(query)
+        .then(response => {
+            dispatch({
+                type: ACTION_TYPES.SAVE_FORECAST_DATA,
+                payload: response
+            })
+        });
+
+export const showError = (error: Error) => ({
+    type: ACTION_TYPES.SHOW_API_ERROR,
+    payload: error
+});
+
+export const clearError = () => ({
+    type: ACTION_TYPES.CLEAR_ERROR
+});
