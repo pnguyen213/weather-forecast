@@ -2,11 +2,10 @@ import React, { useState, useEffect, useCallback } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles, Paper, Theme } from '@material-ui/core';
-import { debounce } from 'lodash';
 import { Forecast } from '../../models/dataModel';
 import { Dispatch } from 'redux';
-import { DEBOUND_INPUT_DELAY } from '../../redux/constants';
 import { useDebounce } from '../../redux/customHooks';
+import DayForecast from '../DayForecast/DayForecast';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -14,10 +13,6 @@ const useStyles = makeStyles((theme: Theme) => ({
         backgroundColor: 'gainsboro',
         width: 'auto',
         margin: 'initial',
-    },
-    paper: {
-        height: 'auto',
-        width: 'auto',
     },
     datafield: {
         fontFamily: 'cursive',
@@ -31,9 +26,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     locationInput: {
         margin: '40px 40px 40px 20px'
     },
-    weatherIcon: {
-        paddingLeft: 'calc((100% - 64px) /2)'
-    }
 }));
 
 interface LocationForecastProps {
@@ -82,14 +74,7 @@ export default function LocationForecast(props: LocationForecastProps) {
                     && props.recentForecasts.forecast.length
                     && props.recentForecasts.forecast.map(forecast => (
                         <Grid item xs>
-                            <Paper className={classes.paper}>
-                                <div className={classes.datafield}>Date: {forecast.date}</div>
-                                <div className={classes.datafield}>Average Temperature: {forecast.avgtemp_c}</div>
-                                <div className={classes.datafield}>Maximum Temperature: {forecast.maxtemp_c}</div>
-                                <div className={classes.datafield}>Minimum Temperature: {forecast.mintemp_c}</div>
-                                <div className={classes.datafield}>Condition: {forecast.conditionText}</div>
-                                <div><img className={classes.weatherIcon} src={forecast.conditionIcon}></img></div>
-                            </Paper>
+                            <DayForecast forecast={forecast} />
                         </Grid>
                     ))}
             </Grid>
