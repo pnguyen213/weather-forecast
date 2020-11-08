@@ -5,6 +5,11 @@ INTRODUCTION:
 
 This codebase may complicate some aspects more than what is required to showcase different techniques and patterns that can be applied on a bigger-scale system.
 
+*** IMPORTANT ***
+
+- Because of CORS issues, I cannot use the suggest Public API in the PDF file, and have to search another Public API to use.
+- Because of limits of the free token (my account is a trial account), the API may limit the number of forecast days to only 3, even if I sent parameter 5 or higher to the server. That's why you only see 3 forecasts, but in fact I sent parameter 5 to the server.
+
 
 1. FEATURES
 
@@ -36,5 +41,8 @@ CUSTOM HOOKS
 - ApiErrorHandler will handle all errors for asynchronous requests within the application and show a popup at the bottom with the error message. I use axios interceptors to intercept response and dispatch error state to Redux store. This help decouple the error handling code from the component, as well as the action creators, avoiding duplicating the error handling mechanism in every action creators that send asynchronous requests.
 
 
-4. UNIT TESTING
+4. TESTING
 
+- Avoid testing implementation details.
+- Test the same way that the end users would use the system.
+- As this is a simple application, I decide not to mock anything, and the test is more like an Integration Test than Unit test. Because of time limit, I didn't write unit tests, but it would be simple since I only need to mock the unnecessary parts.

@@ -53,7 +53,7 @@ export default function LocationForecast(props: LocationForecastProps) {
             <TextField
                 id="outlined-textarea"
                 label=""
-                placeholder="Placeholder"
+                placeholder="Enter location"
                 variant="outlined"
                 className={classes.locationInput}
                 value={locationQuery}
@@ -73,7 +73,7 @@ export default function LocationForecast(props: LocationForecastProps) {
                     && props.recentForecasts.forecast
                     && props.recentForecasts.forecast.length
                     && props.recentForecasts.forecast.map(forecast => (
-                        <Grid item xs>
+                        <Grid key={forecast.date} item xs>
                             <DayForecast forecast={forecast} />
                         </Grid>
                     ))}
